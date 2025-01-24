@@ -1,0 +1,264 @@
+﻿@model X.PagedList.IPagedList<ResultGameDto>
+@using X.PagedList.Mvc.Core;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+
+<body>
+    <section class="page-info-section set-bg" data-setbg="/game-warrior-gh-pages/img/page-top-bg/1.jpg">
+        <div class="pi-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-6 text-white">
+                        <h2>Oyunlar</h2>
+                        <p>Bu sayfada istediğiniz oyunun indirme linklerine ulaşabilirsiniz.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="game-list-section">
+        <div class="container">
+            <!-- Arama kutusu burada -->
+            <div class="search-container">
+                <input type="text" id="searchInput" onkeyup="searchGames()" placeholder="Oyun adıyla ara..." class="form-control" />
+            </div>
+
+            <div class="row" id="gameList">
+                @foreach (var game in Model)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="game-card">
+                            <img src="@game.ImageUrl" alt="@game.Name" class="game-image">
+                            <div class="game-info">
+                                <h3>@game.Name</h3>
+                                <br />
+                                <p>Tür: @game.Type</p>
+                            </div>
+                            <div class="game-links">
+                                @if (!string.IsNullOrEmpty(game.SteamUrl))
+                                {
+                                    <a href="@game.SteamUrl" target="_blank"><img src="/images/icons/steam-icon.jpg" alt="Steam"></a>
+                                }
+                                @if (!string.IsNullOrEmpty(game.EpicUrl))
+                                {
+                                    <a href="@game.EpicUrl" target="_blank"><img src="/images/icons/epic-icon.png" alt="Epic"></a>
+                                }
+                                @if (!string.IsNullOrEmpty(game.PsUrl))
+                                {
+                                    <a href="@game.PsUrl" target="_blank"><img src="/images/icons/ps-icon.png" alt="PlayStation"></a>
+                                }
+                                @if (!string.IsNullOrEmpty(game.XboxUrl))
+                                {
+                                    <a href="@game.XboxUrl" target="_blank"><img src="/images/icons/xbox-icon.png" alt="Xbox"></a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Sayfalama Kontrolleri -->
+            <div class="pagination-container">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+           {
+               DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+               DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+               DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+               DisplayLinkToLastPage = PagedListDisplayMode.Always,
+               MaximumPageNumbersToDisplay = 5,
+               LinkToPreviousPageFormat = "Önceki",
+               LinkToNextPageFormat = "Sonraki",
+               LinkToFirstPageFormat = "İlk",
+               LinkToLastPageFormat = "Son",
+               UlElementClasses = new[] { "pagination" }
+           })
+            </div>
+        </div>
+    </section>
+
+    <script>
+        async function searchGames() {
+            const query = document.getElementById("searchInput").value;
+
+            if (query.trim() === "") {
+                const response = await fetch(`/Game/GetAllGames`); // Tüm oyunları dönen endpoint
+                const games = await response.json();
+                updateGameList(games);
+            } else {
+                const response = await fetch(`/Game/Search?query=${query}`);
+                const games = await response.json();
+                updateGameList(games);
+            }
+        }
+
+        function updateGameList(games) {
+            const gameList = document.getElementById('gameList');
+            gameList.innerHTML = ''; // Önce mevcut oyunları temizle
+
+            games.forEach(game => {
+                const gameCard = `
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="game-card">
+                                            <img src="${game.imageUrl}" alt="${game.name}" class="game-image">
+                                            <div class="game-info">
+                                                <h3>${game.name}</h3>
+                                                <br />
+                                                <p>Tür: ${game.type}</p>
+                                            </div>
+                                            <div class="game-links">
+                                                ${game.steamUrl ? `<a href="${game.steamUrl}" target="_blank"><img src="/images/icons/steam-icon.jpg" alt="Steam"></a>` : ''}
+                                                ${game.epicUrl ? `<a href="${game.epicUrl}" target="_blank"><img src="/images/icons/epic-icon.png" alt="Epic"></a>` : ''}
+                                                ${game.psUrl ? `<a href="${game.psUrl}" target="_blank"><img src="/images/icons/ps-icon.png" alt="PlayStation"></a>` : ''}
+                                                ${game.xboxUrl ? `<a href="${game.xboxUrl}" target="_blank"><img src="/images/icons/xbox-icon.png" alt="Xbox"></a>` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                gameList.innerHTML += gameCard; // Yeni oyunu listeye ekle
+            });
+        }
+    </script>
+
+    <style>
+        .page-info-section {
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+        }
+
+        .game-list-section {
+            padding: 50px 0;
+        }
+
+        .game-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .game-card:hover {
+                transform: scale(1.05);
+            }
+
+        .game-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .game-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+            .game-info h3 {
+                font-size: 1.5rem;
+                color: #333;
+            }
+
+            .game-info p {
+                color: #666;
+            }
+
+        .game-links {
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+            .game-links a {
+                margin: 0 10px;
+            }
+
+            .game-links img {
+                width: 40px;
+                height: 40px;
+                transition: all 0.3s ease;
+            }
+
+                .game-links img:hover {
+                    transform: scale(1.1);
+                }
+
+        .pagination-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            display: inline-block;
+            list-style: none;
+            padding: 0;
+        }
+
+            .pagination li {
+                display: inline;
+                margin: 0 5px;
+            }
+
+                .pagination li a {
+                    padding: 10px 15px;
+                    background-color: #f1f1f1;
+                    border-radius: 5px;
+                    color: #333;
+                    text-decoration: none;
+                    transition: background-color 0.3s ease;
+                    border: 1px solid #ddd;
+                    cursor: pointer; /* El simgesini aktif yapar */
+                }
+
+                    .pagination li a:hover {
+                        background-color: #333;
+                        color: #fff;
+                    }
+
+                .pagination li.active a {
+                    background-color: #333;
+                    color: #fff;
+                    border: 1px solid #333;
+                    cursor: default;
+                }
+
+        /* Arama kutusu stil ayarları */
+        .search-container {
+            display: flex;
+            justify-content: center; /* Ortalamak için */
+            margin-bottom: 20px; /* Kartların üzerinde boşluk bırakmak için */
+        }
+
+        .form-control {
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            padding: 10px;
+            width: 80%; /* Arama kutusunun genişliği */
+            transition: border-color 0.3s ease;
+        }
+
+            .form-control:focus {
+                border-color: #007bff; /* Focus olduğunda kenar rengi */
+                outline: none; /* Kenar dışı */
+            }
+
+        .btn-primary {
+            border: 1px solid #007bff; /* Butonun kenar rengi */
+            background-color: #007bff; /* Butonun arka plan rengi */
+            color: white; /* Butonun metin rengi */
+            border-radius: 0 5px 5px 0; /* Kenar yuvarlama */
+            padding: 10px 15px; /* Butonun iç boşluğu */
+            margin-left: -1px; /* Arama kutusuyla birleşmesi için */
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3; /* Hover durumunda arka plan rengi */
+                border-color: #0056b3; /* Kenar rengi */
+            }
+    </style>
+</body>

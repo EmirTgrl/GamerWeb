@@ -1,0 +1,110 @@
+﻿@model NewsDetailsViewModel
+@{
+    ViewData["Title"] = "NewsDetails";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="zxx">
+<body>
+    <!-- Page info section -->
+    <section class="page-info-section set-bg" data-setbg="/game-warrior-gh-pages/img/page-top-bg/1.jpg">
+        <div class="pi-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-6 text-white">
+                        <h2>@Model.News.GameName</h2>
+                        <p>@Model.News.Subtitle</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Page info section -->
+    <!-- Page section -->
+    <section class="page-section single-blog-page spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="blog-thumb set-bg" data-setbg="@Model.News.ImageUrl">
+                    </div>
+                    <p><i class="fas fa-clock"></i> @Model.News.Date.ToString("MMMM dd, yyyy HH:mm")</p>
+                    <div class="blog-content">
+                        <h3>@Model.News.Title</h3>
+                        <p>@Model.News.Description</p>
+                    </div>
+                    <div class="comment-warp">
+                        <h4 class="comment-title">Yorumlar</h4>
+                        <ul class="comment-list">
+                            @if (Model.Comments != null && Model.Comments.Any())
+                            {
+                                foreach (var comment in Model.Comments)
+                                {
+                                    <li>
+                                        <div class="comment">
+                                            <div class="comment-avator set-bg" data-setbg="/game-warrior-gh-pages/img/authors/1.jpg"></div>
+                                            <div class="comment-content">
+                                                <h5>@comment.Name <span>@comment.Date.ToString("MMMM dd, yyyy HH:mm")</span></h5>
+                                                <p>@comment.Content</p>
+                                                @* <a href="#" class="reply">Yanıtla</a> *@
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li>
+                                    <p>Henüz yorum yapılmamış.</p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="comment-form-warp">
+                        <h4 class="comment-title">Yorum Yazın</h4>
+                        <form asp-controller="Comment" asp-action="Create" method="post" class="comment-form">
+                            <input type="hidden" name="NewsId" value="@Model.News.NewsId" />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" name="Name" placeholder="İsim" required />
+                                </div>
+                                <div class="col-lg-12">
+                                    <textarea name="Content" placeholder="Mesajınız" required></textarea>
+                                    <button type="submit" class="site-btn btn-sm">Gönder</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- sidebar -->
+                <div class="col-lg-4 col-md-7 sidebar pt-5 pt-lg-0">
+                    <!-- widget -->
+                    @* <div class="widget-item">
+                        <form class="search-widget" method="post">
+                            <input type="text" placeholder="Ara">
+                            <button><i class="fa fa-search"></i></button>
+                        </form>
+                    </div> *@
+                    <!-- widget -->
+                    <div class="footer-widget mb-5 mb-md-0">
+                        <h4 class="fw-title">Son Haberler</h4>
+                        <div class="latest-blog">
+                            @foreach (var news in Model.Last4News)
+                            {
+                                <div class="lb-item">
+                                    <div class="lb-thumb set-bg" data-setbg="@news.ImageUrl"></div>
+                                    <div class="lb-content">
+                                        <div class="lb-date">@news.Date.ToString("MMMM dd, yyyy")</div>
+                                        <p><a href="@Url.Action("NewsDetails", "News", new { id = news.NewsId })">@news.Title</a></p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <!-- widget -->
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

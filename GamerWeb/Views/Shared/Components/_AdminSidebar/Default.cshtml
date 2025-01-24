@@ -1,0 +1,42 @@
+﻿<div class="quixnav">
+    <div class="quixnav-scroll">
+        <ul class="metismenu" id="menu">
+            @* <li class="nav-label first" style="color:white">Admin Paneli</li> *@
+            <li>
+                <a asp-area="Admin" asp-controller="News" asp-action="NewsList" aria-expanded="false">
+                    <i class="bi bi-newspaper"></i><span class="nav-text">Haberler</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="AdminReview" asp-action="ReviewList" aria-expanded="false">
+                    <i class="bi bi-star"></i><span class="nav-text">İncelemeler</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="AdminGame" asp-action="GameList" aria-expanded="false">
+                    <i class="bi bi-controller"></i><span class="nav-text">Oyunlar</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="AdminComment" asp-action="CommentList" aria-expanded="false">
+                    <i class="bi bi-chat-dots"></i><span class="nav-text">Gelen Yorumlar</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="Message" asp-action="Index" aria-expanded="false">
+                    <i class="bi bi-envelope"></i><span class="nav-text">Gelen Mesajlar</span>
+                </a>
+            </li>
+            <li>
+                <a asp-area="Admin" asp-controller="User" asp-action="UserList" aria-expanded="false">
+                    <i class="bi bi-people"></i><span class="nav-text">Kullanıcılar</span>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Default" asp-action="Index" aria-expanded="false">
+                    <i class="bi bi-box-arrow-up-right"></i><span class="nav-text">Siteye Git</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

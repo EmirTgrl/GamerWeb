@@ -1,0 +1,83 @@
+﻿@model UpdateProfileDto
+
+@{
+    ViewData["Title"] = "Profil Düzenle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Profil Düzenle</h2>
+
+<form id="updateProfileForm" asp-action="Profile" method="post">
+    <div class="form-group">
+        <label for="Username">Kullanıcı Adı</label>
+        <input type="text" asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Email">E-posta</label>
+        <input type="email" asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="CurrentPassword">Mevcut Şifre</label>
+        <input type="password" asp-for="CurrentPassword" class="form-control" />
+        <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="NewPassword">Yeni Şifre</label>
+        <input type="password" asp-for="NewPassword" class="form-control" />
+        <span asp-validation-for="NewPassword" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="ConfirmPassword">Yeni Şifreyi Onayla</label>
+        <input type="password" asp-for="ConfirmPassword" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+</form>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    document.getElementById('updateProfileForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Formun hemen submit edilmesini engeller
+
+        var form = this;
+
+        Swal.fire({
+            title: 'Profil Bilgisi Güncelleme',
+            text: "Profil bilgilerinizi güncellemek istediğinize emin misiniz?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, güncelle!',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Onaylanmışsa formu gönder
+                form.submit();
+            }
+        })
+    });
+
+    // Başarı mesajı varsa göster
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <text>
+                Swal.fire({
+                    icon: 'success',
+                title: 'Başarılı',
+                text: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["SuccessMessage"])),
+                showConfirmButton: false,
+                timer: 1500
+                        });
+        </text>
+    }
+</script>

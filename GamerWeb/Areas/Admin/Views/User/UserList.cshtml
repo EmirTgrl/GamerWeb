@@ -1,0 +1,42 @@
+﻿@model IEnumerable<GamerWeb.Areas.Admin.Models.UserWithRolesDto>
+@{
+    ViewData["Title"] = "Kullanıcılar Sayfası";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Kullanıcılar</h2>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Kullanıcı Adı</th>
+                <th>E-posta</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                int count = 1;
+                foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@count</td>
+                        <td>@user.Username</td>
+                        <td>@user.Email</td>
+                        <td>@user.Roles</td>
+                    </tr>
+                    count++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center">Kayıtlı kullanıcı bulunamadı.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

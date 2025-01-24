@@ -1,0 +1,56 @@
+﻿@model UpdateNewsDto
+@{
+    ViewData["Title"] = "Haber Güncelleme Sayfası";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form id="updateNewsForm" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="NewsId" />
+    <label>Mevcut Resim</label><br />
+    <img src="@Model.ImageUrl" alt="Oyun Resmi" style="width: 100px; height: 100px;" /><br /><br />
+    <label>Yeni Resim Yükle</label>
+    <input type="file" asp-for="ImageFile" class="form-control" />
+    <span asp-validation-for="ImageFile" class="text-danger"></span>
+    <br />
+    <label>Oyun Adı</label>
+    <input type="text" asp-for="GameName" class="form-control" />
+    <span asp-validation-for="GameName" class="text-danger"></span>
+    <br />
+    <label>Başlık</label>
+    <input type="text" asp-for="Title" class="form-control" />
+    <span asp-validation-for="Title" class="text-danger"></span>
+    <br />
+    <label>Açıklama</label>
+    <textarea asp-for="Description" class="form-control"></textarea>
+    <span asp-validation-for="Description" class="text-danger"></span>
+    <br />
+    <label>Üst Başlık</label>
+    <input type="text" asp-for="Subtitle" class="form-control" />
+    <span asp-validation-for="Subtitle" class="text-danger"></span>
+    <br />
+    <button type="submit" class="btn btn-outline-dark">Güncelle</button>
+</form>
+
+<script>
+    document.getElementById('updateNewsForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Formun hemen submit edilmesini engeller
+
+        var form = this;
+
+        Swal.fire({
+            title: 'Haber Güncelleme',
+            text: "Bu haberi güncellemek istediğinize emin misiniz?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, güncelle!',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Onaylanmışsa formu gönder
+                form.submit();
+            }
+        })
+    });
+</script>

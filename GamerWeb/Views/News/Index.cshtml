@@ -1,0 +1,152 @@
+﻿@model X.PagedList.IPagedList<ResultNewsDto>
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <style>
+        /* Card yapısı için CSS */
+        .recent-game-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column; /* Dikey hizalama için */
+            height: 100%; /* Kartın tamamını kapsaması için */
+        }
+
+            .recent-game-item:hover {
+                transform: scale(1.05);
+            }
+
+        .rgi-thumb {
+            width: 100%;
+            height: 150px; /* Sabit yükseklik */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .rgi-content {
+            padding: 15px;
+            flex-grow: 1; /* İçeriğin kartı doldurmasını sağlar */
+        }
+
+            .rgi-content h5 {
+                margin: 0;
+                font-size: 18px;
+            }
+
+            .rgi-content p {
+                margin: 10px 0 0;
+                color: #666;
+                flex-grow: 1; /* Paragraf içeriğinin esnek olmasını sağlar */
+            }
+
+            .rgi-content .btn {
+                margin-top: auto; /* Butonu en alta yerleştirir */
+            }
+
+
+        .pagination-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            display: inline-block;
+            list-style: none;
+            padding: 0;
+        }
+
+            .pagination li {
+                display: inline;
+                margin: 0 5px;
+            }
+
+                .pagination li a {
+                    padding: 10px 15px;
+                    background-color: #f1f1f1;
+                    border-radius: 5px;
+                    color: #333;
+                    text-decoration: none;
+                    transition: background-color 0.3s ease;
+                    border: 1px solid #ddd;
+                    cursor: pointer;
+                }
+
+                    .pagination li a:hover {
+                        background-color: #333;
+                        color: #fff;
+                    }
+
+                .pagination li.active a {
+                    background-color: #333;
+                    color: #fff;
+                    border: 1px solid #333;
+                    cursor: default;
+                }
+
+    </style>
+
+</head>
+<body>
+    <section class="page-info-section set-bg" data-setbg="/game-warrior-gh-pages/img/page-top-bg/1.jpg">
+        <div class="pi-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-6 text-white">
+                        <h2>Haberler</h2>
+                        <p>Bu sayfada hem oyun dünyasından haber edinebilir hem de teknoloji haberlerini okuyabilirsiniz.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-section recent-game-page spad">
+        <div class="container">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-4">
+                        <div class="recent-game-item">
+                            <div class="rgi-thumb set-bg" data-setbg="@item.ImageUrl">
+                            </div>
+                            <div class="rgi-content">
+                                <a asp-controller="News" asp-action="NewsDetails" asp-route-id="@item.NewsId">
+                                    <h5>@item.Title</h5>
+                                </a>
+                                <p>@(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</p>
+                                <a asp-controller="News" asp-action="NewsDetails" asp-route-id="@item.NewsId" class="btn btn-outline-dark">Devamını Oku</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Sayfalama Kontrolü -->
+            <div class="pagination-container">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+           {
+               DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+               DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+               DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+               DisplayLinkToLastPage = PagedListDisplayMode.Always,
+               MaximumPageNumbersToDisplay = 5,
+               LinkToPreviousPageFormat = "Önceki",
+               LinkToNextPageFormat = "Sonraki",
+               LinkToFirstPageFormat = "İlk",
+               LinkToLastPageFormat = "Son",
+               UlElementClasses = new[] { "pagination" }
+           })
+            </div>
+        </div>
+    </section>
+</body>
+</html>

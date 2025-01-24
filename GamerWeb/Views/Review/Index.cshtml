@@ -1,0 +1,143 @@
+﻿@model X.PagedList.IPagedList<ResultReviewDto>
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="zxx">
+<body>
+    <!-- Sayfa bilgi bölümü -->
+    <section class="page-info-section set-bg" data-setbg="/game-warrior-gh-pages/img/page-top-bg/3.jpg">
+        <div class="pi-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-6 text-white">
+                        <h2>Oyun İncelemeleri</h2>
+                        <p>Bu sayfada her türlü oyunun moderatörlerimiz tarafından incelemelerine ulaşabilirsiniz.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Sayfa bilgi bölümü sonu -->
+    <!-- Sayfa bölümü -->
+    <section class="page-section review-page spad">
+        <div class="container">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <!-- Her kart arasında boşluk -->
+                        <div class="review-item" style="height: 100%;">
+                            <div class="review-cover" style="background-image: url('@item.GameImage'); height: 220px; background-size: cover; background-position: center;">
+                                <div class="score yellow" style="position: absolute; top: 10px; left: 10px; z-index: 1;">@item.Rating</div>
+                            </div>
+                            <div class="review-text">
+                                <a asp-controller="Review" asp-action="ReviewDetails" asp-route-id="@item.ReviewId">
+                                    <h5>@item.GameName</h5>
+                                </a>
+                                <p>@(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="pagination-container">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+           {
+               DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+               DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+               DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+               DisplayLinkToLastPage = PagedListDisplayMode.Always,
+               MaximumPageNumbersToDisplay = 5,
+               LinkToPreviousPageFormat = "Önceki",
+               LinkToNextPageFormat = "Sonraki",
+               LinkToFirstPageFormat = "İlk",
+               LinkToLastPageFormat = "Son",
+               UlElementClasses = new[] { "pagination" }
+           })
+            </div>
+        </div>
+    </section>
+    <!-- Sayfa bölümü sonu -->
+</body>
+</html>
+
+<style>
+    .pagination-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .pagination {
+        display: inline-block;
+        list-style: none;
+        padding: 0;
+    }
+
+        .pagination li {
+            display: inline;
+            margin: 0 5px;
+        }
+
+            .pagination li a {
+                padding: 10px 15px;
+                background-color: #f1f1f1;
+                border-radius: 5px;
+                color: #333;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                border: 1px solid #ddd;
+                cursor: pointer;
+            }
+
+                .pagination li a:hover {
+                    background-color: #333;
+                    color: #fff;
+                }
+
+            .pagination li.active a {
+                background-color: #333;
+                color: #fff;
+                border: 1px solid #333;
+                cursor: default;
+            }
+
+    .review-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Üst kısma hizalama */
+        height: 100%;
+        margin-bottom: 0;
+    }
+
+    .review-cover {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 220px;
+        margin-bottom: 0; /* Alt boşluğu kaldır */
+    }
+
+    .review-text {
+        padding: 5px 0; /* Daha az padding */
+        margin: 0; /* Varsayılan margin değerlerini sıfırla */
+        flex-grow: 1; /* Boşluğu tamamen doldur */
+    }
+
+        .review-text h5 {
+            margin-top: 5px;
+            margin-bottom: 5px; /* Başlık ve metin arasındaki boşluğu azalt */
+            font-size: 20px;
+        }
+
+        .review-text p {
+            margin: 0; /* Alt ve üst boşlukları kaldır */
+            font-size: 14px;
+            line-height: 1.4; /* Daha kompakt bir görünüm için satır yüksekliği */
+        }
+</style>

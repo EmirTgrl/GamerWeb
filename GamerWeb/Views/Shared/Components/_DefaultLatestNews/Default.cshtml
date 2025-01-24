@@ -1,0 +1,23 @@
+﻿@model List<ResultNewsDto>
+<section class="recent-game-section spad set-bg" data-setbg="/game-warrior-gh-pages/img/recent-game-bg.png">
+    <div class="container">
+        <div class="section-title">
+            <h2>Son Haberler</h2>
+        </div>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="recent-game-item">
+                        <div class="rgi-thumb set-bg" data-setbg="@item.ImageUrl">
+                        </div>
+                        <div class="rgi-content">
+                            <h5><a href="@Url.Action("NewsDetails", "News", new { id = item.NewsId })">@item.Title</a></h5>
+                            <p>@(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+
+<!-- Hero section -->
+@await Component.InvokeAsync("_DefaultSlider")
+<!-- Hero section end -->
+<!-- Recent game section  -->
+@await Component.InvokeAsync("_DefaultLatestNews")
+<div></div>
+<!-- Recent game section end -->
+<!-- Review section -->
+@await Component.InvokeAsync("_DefaultReviews")
+<!-- Review section end -->
+<!-- Footer top section -->
+@await Component.InvokeAsync("_DefaultFooterTop")
+<!-- Footer top section end -->

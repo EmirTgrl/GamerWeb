@@ -1,0 +1,109 @@
+﻿@{
+    Layout = "_UILayout";
+}
+
+<h2 style="text-align: center;">Sohbet Sayfası</h2>
+<p style="text-align: center;">Burada bir sohbete başlayabilirsiniz!</p>
+
+<!-- Sohbet alanı -->
+<div id="chatContainer" style="max-width: 600px; margin: 0 auto; border: 1px solid #ccc; padding: 10px; border-radius: 8px; background-color: #f9f9f9; height: 400px; display: flex; flex-direction: column;">
+    <div id="chatMessages" style="overflow-y: auto; flex-grow: 1; margin-bottom: 10px; padding-right: 10px;"></div>
+
+    <!-- Kullanıcı mesajını yazması için alan -->
+    <form id="chatForm" style="display: flex; justify-content: space-between;">
+        <textarea id="userMessage" placeholder="Mesajınızı yazın..." rows="3" style="width: 80%; padding: 8px; font-size: 14px; border-radius: 4px; border: 1px solid #ddd; resize: none;"></textarea>
+        <button type="submit" style="width: 15%; background-color: #007bff; color: white; border: none; padding: 10px; font-size: 14px; border-radius: 4px; cursor: pointer;">Gönder</button>
+    </form>
+</div>
+
+<script>
+    // Sohbet formu gönderildiğinde
+    document.getElementById('chatForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const message = document.getElementById('userMessage').value;
+        if (!message) return;
+
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Kullanıcı mesajını ekleyelim
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.style.marginBottom = '10px';
+        userMessageDiv.style.backgroundColor = '#007bff';
+        userMessageDiv.style.color = 'white';
+        userMessageDiv.style.padding = '8px';
+        userMessageDiv.style.borderRadius = '10px';
+        userMessageDiv.textContent = `Sen: ${message}`;
+        chatMessages.appendChild(userMessageDiv);
+
+        // Mesajı temizle
+        document.getElementById('userMessage').value = '';
+
+        // Yanıt kısmı
+        const responseDiv = document.createElement('div');
+        responseDiv.textContent = 'Sohbet ediyor...';
+        responseDiv.style.marginTop = '10px';
+        chatMessages.appendChild(responseDiv);
+
+        // Sohbet penceresini en son mesaja kaydır
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        try {
+            const response = await fetch('/api/chat/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            });
+
+            const data = await response.json();
+
+            // API yanıtı geldikten sonra
+            responseDiv.textContent = `Bot:\n${data.message}`;
+            responseDiv.style.whiteSpace = 'pre-line'; // Yeni satırları işlemek için
+            responseDiv.style.backgroundColor = '#e0e0e0';
+            responseDiv.style.color = 'black';
+            responseDiv.style.padding = '8px';
+            responseDiv.style.borderRadius = '10px';
+
+            // Sohbet penceresini en son mesaja kaydır
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        } catch (error) {
+            responseDiv.textContent = 'Bir hata oluştu.';
+            responseDiv.style.backgroundColor = '#f8d7da';
+            responseDiv.style.color = '#721c24';
+        }
+    });
+</script>
+
+<style>
+    #chatContainer {
+        font-family: Arial, sans-serif;
+    }
+
+    #chatMessages {
+        font-size: 14px;
+    }
+
+    #chatForm textarea {
+        font-size: 14px;
+    }
+
+    #chatForm button {
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+        #chatForm button:hover {
+            background-color: #0056b3;
+        }
+
+    #chatMessages div {
+        margin-bottom: 10px;
+    }
+
+    #chatMessages .bot-message {
+        white-space: pre-line; /* Yeni satır karakterlerini uygula */
+    }
+</style>

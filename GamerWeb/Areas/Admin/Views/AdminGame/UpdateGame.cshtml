@@ -1,0 +1,72 @@
+﻿@model UpdateGameDto
+@{
+    ViewData["Title"] = "Oyun Güncelleme Sayfası";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form id="updateGameForm" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="GameId" />
+    <label>Oyun Adı</label>
+    <input type="text" asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+    <br />
+    <label>Mevcut Resim</label><br />
+    <img src="@Model.ImageUrl" alt="Oyun Resmi" style="width: 100px; height: 100px;" /><br /><br />
+    <label>Yeni Resim Yükle</label>
+    <input type="file" asp-for="ImageFile" class="form-control" />
+    <span asp-validation-for="ImageFile" class="text-danger"></span>
+    <br />
+    <label>Türü</label>
+    <input type="text" asp-for="Type" class="form-control" />
+    <span asp-validation-for="Type" class="text-danger"></span>
+    <br />
+    <label>Açıklama</label>
+    <input type="text" asp-for="Description" class="form-control" />
+    <span asp-validation-for="Description" class="text-danger"></span>
+    <br />
+    <label>Çıkış Tarihi</label>
+    <input type="text" asp-for="ReleaseDate" class="form-control" />
+    <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+    <br />
+    <label>Steam Url</label>
+    <input type="text" asp-for="SteamUrl" class="form-control" />
+    <span asp-validation-for="SteamUrl" class="text-danger"></span>
+    <br />
+    <label>Epic Url</label>
+    <textarea asp-for="EpicUrl" class="form-control"></textarea>
+    <span asp-validation-for="EpicUrl" class="text-danger"></span>
+    <br />
+    <label>Ps Url</label>
+    <input type="text" asp-for="PsUrl" class="form-control" />
+    <span asp-validation-for="PsUrl" class="text-danger"></span>
+    <br />
+    <label>Xbox Url</label>
+    <input type="text" asp-for="XboxUrl" class="form-control" />
+    <span asp-validation-for="XboxUrl" class="text-danger"></span>
+    <br />
+    <button type="submit" class="btn btn-outline-dark">Güncelle</button>
+</form>
+
+<script>
+    document.getElementById('updateGameForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Formun hemen submit edilmesini engeller
+
+        var form = this;
+
+        Swal.fire({
+            title: 'Oyun Güncelleme',
+            text: "Bu oyunu güncellemek istediğinize emin misiniz?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, güncelle!',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Onaylanmışsa formu gönder
+                form.submit();
+            }
+        })
+    });
+</script>

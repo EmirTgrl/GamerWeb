@@ -1,0 +1,72 @@
+﻿@model CreateContactUsDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <!-- Page info section -->
+    <section class="page-info-section set-bg" data-setbg="/game-warrior-gh-pages/img/page-top-bg/5.jpg">
+        <div class="pi-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-6 text-white">
+                        <h2>Bize Yazın</h2>
+                        <p>Aşağıdan bize istediğiniz konuda mesaj bırakabilirsiniz. Her türlü öneri ve teklif dikkate alınmaktadır.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Page info section -->
+    <!-- Page section -->
+    <section class="page-section spad contact-page">
+        <div class="container">
+            <div class="map" id="map-canvas"></div>
+            <div class="row">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h4 class="comment-title">İletişim Bilgilerimiz</h4>
+                    <p>Aşağıda yer alan bilgilerden bize her zaman ulaşabilirsiniz.</p>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <ul class="contact-info-list">
+                                <li><div class="cf-left">Mail Adresi</div><div class="cf-right">gamerweb@gmail.com</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="contact-form-warp">
+                        <h4 class="comment-title">Bize Yazın</h4>
+                        <form class="comment-form" method="post">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="email" asp-for="Mail" placeholder="Email">
+                                </div>
+                                <div class="col-lg-12">
+                                    <input type="text" asp-for="Subject" placeholder="Konu">
+                                    <textarea placeholder="Mesajınız" asp-for="Body"></textarea>
+                                    <button class="site-btn btn-sm">Gönder</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Page section end -->
+    <!-- load for map -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWTIlluowDL-X4HbYQt3aDw_oi2JP0Krc&sensor=false"></script>
+    <script src="~/game-warrior-gh-pages/js/map.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+﻿@model CreateGameDto
+@{
+    ViewData["Title"] = "Oyun Ekleme Sayfası";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form id="createGameForm" method="post" enctype="multipart/form-data">
+    <label>Oyun Adı</label>
+    <input type="text" asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+    <br />
+    <label>Oyun Resim Yükle</label>
+    <input type="file" asp-for="ImageFile" class="form-control" />
+    <span asp-validation-for="ImageFile" class="text-danger"></span>
+    <br />
+    <label>Türü</label>
+    <input type="text" asp-for="Type" class="form-control" />
+    <span asp-validation-for="Type" class="text-danger"></span>
+    <br />
+    <label>Açıklama</label>
+    <input type="text" asp-for="Description" class="form-control" />
+    <span asp-validation-for="Description" class="text-danger"></span>
+    <br />
+    <label>Çıkış Tarihi</label>
+    <input type="text" asp-for="ReleaseDate" class="form-control" />
+    <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+    <br />
+    <label>Steam Url</label>
+    <input type="text" asp-for="SteamUrl" class="form-control" />
+    <span asp-validation-for="SteamUrl" class="text-danger"></span>
+    <br />
+    <label>Epic Url</label>
+    <input type="text" asp-for="EpicUrl" class="form-control" />
+    <span asp-validation-for="EpicUrl" class="text-danger"></span>
+    <br />
+    <label>Ps Url</label>
+    <input type="text" asp-for="PsUrl" class="form-control" />
+    <span asp-validation-for="PsUrl" class="text-danger"></span>
+    <br />
+    <label>Xbox Url</label>
+    <input type="text" asp-for="XboxUrl" class="form-control" />
+    <span asp-validation-for="XboxUrl" class="text-danger"></span>
+    <br />
+    <button class="btn btn-outline-dark">Kaydet</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    document.getElementById('createGameForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Formun hemen submit edilmesini engeller
+
+        var form = this;
+
+        Swal.fire({
+            title: 'Oyun Ekleme',
+            text: "Oyun eklemek istediğinize emin misiniz?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, ekle!',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Onaylanmışsa formu gönder
+                form.submit();
+            }
+        })
+    });
+
+    // Başarı mesajı varsa göster
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <text>
+                Swal.fire({
+                    icon: 'success',
+                title: 'Başarılı',
+                text: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["SuccessMessage"])),
+                showConfirmButton: false,
+                timer: 1500
+                                });
+        </text>
+    }
+</script>

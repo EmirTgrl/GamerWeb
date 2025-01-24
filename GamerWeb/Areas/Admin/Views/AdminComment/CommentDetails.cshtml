@@ -1,0 +1,19 @@
+﻿@model ResultCommentDto
+
+@{
+    ViewData["Title"] = "Yorum Detay";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>İsim:</th>
+        <th>@Model.Name</th>
+    </tr>
+    <tr>
+        <th>Yorum:</th>
+        <th>@Model.Content</th>
+    </tr>
+</table>
+
+<a asp-area="Admin" asp-controller="AdminComment" asp-action="CommentList" class="btn btn-dark">Yorumlara Dön</a>
