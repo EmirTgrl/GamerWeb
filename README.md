@@ -4,4 +4,4 @@ Entity framework ve N katmanlı mimari kullanarak geliştirilmiştir.
 Kurulum:
 1. Projeyi indirin.
 2. Visual Studio 2022 yi açın.
-3. Open project kısmından proje dizinini seçip çalıştırabilirsiniz.
+3. Open project kısmından .sln uzantılı dosyayı açarak çalıştırabilirsiniz.
