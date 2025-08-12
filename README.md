@@ -64,6 +64,3 @@ Users can interact with a ChatBot to ask questions about games and get quick ans
 - 📦 Entity Framework (Code First)
 - 🧱 N-Tier Architecture (UI, BLL, DAL, Entity)
 
-## 📬 Contact
-
-📧 [mail@example.com](mailto:mail@example.com)
